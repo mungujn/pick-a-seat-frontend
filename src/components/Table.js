@@ -1,4 +1,4 @@
-import {React, Component} from "react";
+import React, {Component} from "react";
 
 class Table extends Component {
     render(){
@@ -7,6 +7,16 @@ class Table extends Component {
                 Table Component
             </div>
         )
+    }
+
+    componentDidMount(){
+        try {
+            let values = queryString.parse(this.props.location.search);
+            let number = values.uid;
+            this.validateCode(uid, code);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

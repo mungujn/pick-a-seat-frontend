@@ -21,7 +21,8 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            component: "SignIn"
+            email_address: "nicksonmjk@gmail.com",
+            ticket_number: "quick-ticket"
         };
     }
 
@@ -38,43 +39,8 @@ class App extends Component {
     }
 
     async componentDidMount() {
-        let user = await API.isSignedIn();
-        if (user === null || user === undefined) {
-            // No user is signed in.
-            console.log("not signed in");
-        } else {
-            // signed in
-            this.setState({
-                signed_in: true
-            });
-            console.log("signed in as:", user);
-            // let token = await API.getToken(); //displays token in console
-        }
+        
     }
-
-    signIn = (email, password) => {
-        console.log(`Signing in with ${email}`);
-        API.login(email, password).then(
-            result => {
-                this.setState({
-                    component: "Layout"
-                });
-                console.log(result);
-            },
-            function(error) {
-                console.log(error);
-            }
-        );
-    };
-
-    signOut = () => {
-        API.logout().then(result => {
-            this.setState({
-                component: "SignIn"
-            });
-            console.log(result);
-        });
-    };
 }
 
 export default App;

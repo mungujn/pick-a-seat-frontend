@@ -8,21 +8,27 @@ const styles = {
         height: "100%",
         width: "100%"
     },
-    balcony: {},
-    selector: {}
+    balcony: {
+        marginTop: "1em",
+        marginLeft: "1em",
+        height: "100%"
+    },
+    selector: {
+        marginTop: "calc(100% - (100% - 10em))"
+    }
 };
 
 class Layout extends Component {
     render() {
         return (
             <Grid style={styles.root}>
-                <Grid.Column width={12}>
-                    <div>
-                        <Balcony />
+                <Grid.Column width={10}>
+                    <div style={styles.balcony}>
+                        <Balcony /> 
                     </div>
                 </Grid.Column>
-                <Grid.Column width={4}>
-                    <div>
+                <Grid.Column width={6}>
+                    <div style={styles.selector}>
                         <Selector />
                     </div>
                 </Grid.Column>
