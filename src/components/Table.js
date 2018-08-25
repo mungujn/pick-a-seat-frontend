@@ -1,39 +1,39 @@
-import React, { Component } from "react";
-import { Image, Grid, Button, Form, Message, Loader } from "semantic-ui-react";
-import * as backend from "../utilities/api";
+import React, { Component } from 'react';
+import { Image, Grid, Button, Form, Message, Loader } from 'semantic-ui-react';
+import * as backend from '../utilities/api';
 
 const styles = {
     root: {
-        width: "100%",
-        height: "100%"
+        width: '100%',
+        height: '100%'
     },
     center: {
-        marginTop: "2em",
-        maxWidth: "80em",
-        height: "100%",
-        marginRight: "auto",
-        marginLeft: "auto"
+        marginTop: '2em',
+        maxWidth: '80em',
+        height: '100%',
+        marginRight: 'auto',
+        marginLeft: 'auto'
     },
     instructions: {
-        marginRight: "auto",
-        marginLeft: "auto"
+        marginRight: 'auto',
+        marginLeft: 'auto'
     },
     hide: {
-        display: "none"
+        display: 'none'
     },
     form: {
-        maxWidth: "20em",
-        marginTop: "2em",
-        marginRight: "auto",
-        marginLeft: "auto"
+        maxWidth: '20em',
+        marginTop: '2em',
+        marginRight: 'auto',
+        marginLeft: 'auto'
     },
     svg_wrapper: {
-        marginRight: "auto",
-        marginLeft: "auto"
+        marginRight: 'auto',
+        marginLeft: 'auto'
     },
     image: {
-        maxWidth: "100%",
-        height: "100%"
+        maxWidth: '100%',
+        height: '100%'
     }
 };
 
@@ -41,24 +41,24 @@ class Table extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            table_number: "1",
+            table_number: '1',
             loading: true,
             show_message: false,
-            message: "Error",
-            header: "Error!",
-            table_name: "Table 1",
+            message: 'Error',
+            header: 'Error!',
+            table_name: 'Table 1',
             seat_states: [
                 {},
-                { taken: false, ticket_number: "" },
-                { taken: false, ticket_number: "" },
-                { taken: false, ticket_number: "" },
-                { taken: false, ticket_number: "" },
-                { taken: false, ticket_number: "" },
-                { taken: false, ticket_number: "" },
-                { taken: false, ticket_number: "" },
-                { taken: false, ticket_number: "" },
-                { taken: false, ticket_number: "" },
-                { taken: false, ticket_number: "" }
+                { taken: false, ticket_number: '' },
+                { taken: false, ticket_number: '' },
+                { taken: false, ticket_number: '' },
+                { taken: false, ticket_number: '' },
+                { taken: false, ticket_number: '' },
+                { taken: false, ticket_number: '' },
+                { taken: false, ticket_number: '' },
+                { taken: false, ticket_number: '' },
+                { taken: false, ticket_number: '' },
+                { taken: false, ticket_number: '' }
             ]
         };
     }
@@ -68,7 +68,7 @@ class Table extends Component {
                 <Grid columns="equal">
                     <Grid.Column computer={8} mobile={16}>
                         <Image
-                            src={require("../plan.jpeg")}
+                            src={require('../plan.jpeg')}
                             style={styles.image}
                             fluid
                         />
@@ -156,15 +156,15 @@ class Table extends Component {
     handleInput = event => {
         const name = event.target.name;
         const value = event.target.value;
-        
-        let x = `${name}`
-        if(x === "table_number"){
-            let y =  `${value}`
-            if (y === "3"){
+
+        let x = `${name}`;
+        if (x === 'table_number') {
+            let y = `${value}`;
+            if (y === '3') {
                 this.setState({
                     [name]: value,
-                    table_name: "Arch"
-                }); 
+                    table_name: 'Arch'
+                });
             } else {
                 this.setState({
                     [name]: value,
@@ -180,28 +180,28 @@ class Table extends Component {
 
     handleClickCheck = event => {
         event.preventDefault();
-        console.log("Checking table");
+        console.log('Checking table');
         this.setState({
             loading: true,
             show_message: false
         });
 
         if (this.validateTableInput()) {
-            console.log("Table input validated");
+            console.log('Table input validated');
             this.updateSeatStates();
         } else {
-            console.log("Table input validation failed");
+            console.log('Table input validation failed');
             this.setState({
                 loading: false,
-                header: "Error!",
+                header: 'Error!',
                 show_message: true,
-                message: "Wrong table number"
+                message: 'Wrong table number'
             });
         }
     };
 
     handleClickSelect = event => {
-        console.log("Selecting seat");
+        console.log('Selecting seat');
         this.setState({
             loading: true,
             show_message: false
@@ -211,19 +211,19 @@ class Table extends Component {
         if (this.validateSeatInput() && this.validateTableInput()) {
             this.pickASeat();
         } else {
-            console.log("Input validation failed");
+            console.log('Input validation failed');
             this.setState({
                 loading: false,
-                header: "Error!",
+                header: 'Error!',
                 show_message: true,
-                message: "Input validation failed"
+                message: 'Input validation failed'
             });
         }
         console.log(this.state);
     };
 
     validateTableInput = () => {
-        console.log("Validating table number input");
+        console.log('Validating table number input');
         let table_number = parseInt(this.state.table_number);
         console.log(table_number);
         if (table_number < 21 && table_number > 0) {
@@ -233,7 +233,7 @@ class Table extends Component {
     };
 
     validateSeatInput = () => {
-        console.log("Validating input");
+        console.log('Validating input');
         if (
             this.state.seat_number !== undefined &&
             this.state.seat_number < 11 &&
@@ -249,11 +249,11 @@ class Table extends Component {
     }
 
     updateSeatStates = async () => {
-        console.log("Updating table seat states");
+        console.log('Updating table seat states');
         try {
             let table = `table-${this.state.table_number}`;
             let seat_states = await backend.checkSeatStates(table);
-            console.log("Table seat_states data is", seat_states);
+            console.log('Table seat_states data is', seat_states);
             this.setState({
                 seat_states: seat_states,
                 loading: false
@@ -261,15 +261,15 @@ class Table extends Component {
         } catch (error) {
             this.setState({
                 loading: false,
-                header: "Error!",
+                header: 'Error!',
                 show_message: true,
-                message: "Failed to update table"
+                message: 'Failed to update table'
             });
         }
     };
 
     pickASeat = async () => {
-        console.log("Updating table seat states");
+        console.log('Updating table seat states');
         try {
             let data = {
                 table: `table-${this.state.table_number}`,
@@ -280,19 +280,19 @@ class Table extends Component {
                 }
             };
             let result = await backend.selectSeat(data);
-            console.log("Seat selection result is", result);
+            console.log('Seat selection result is', result);
             if (result === true) {
                 this.setState({
                     loading: false,
                     show_message: true,
-                    header: "Message",
-                    message: "Successfully selected seat"
+                    header: 'Message',
+                    message: 'Successfully selected seat'
                 });
             } else {
                 this.setState({
                     loading: false,
                     show_message: true,
-                    header: "Error!",
+                    header: 'Error!',
                     message: result
                 });
             }
@@ -304,8 +304,8 @@ class Table extends Component {
             this.setState({
                 loading: false,
                 show_message: true,
-                header: "Error!",
-                message: "Failed to select seat"
+                header: 'Error!',
+                message: 'Failed to select seat'
             });
             setTimeout(() => {
                 this.updateSeatStates();
@@ -327,9 +327,9 @@ class Table extends Component {
 
     getFill = seat => {
         if (seat.taken === true) {
-            return "red";
+            return 'red';
         }
-        return "black";
+        return 'black';
     };
 
     getTableName = () => {
@@ -360,7 +360,7 @@ class Table extends Component {
                         <g transform="translate(172.5,186.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={378}
                                     height={118}
@@ -369,24 +369,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 379,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font style={{ fontSize: 100 }}>
@@ -422,7 +422,7 @@ class Table extends Component {
                         <g transform="translate(283.5,30.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={10}
                                     height={18}
@@ -431,24 +431,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 11,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -487,7 +487,7 @@ class Table extends Component {
                         <g transform="translate(394.5,66.5)scale(0.6)rotate(35,5,9)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={10}
                                     height={18}
@@ -496,24 +496,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 11,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -552,7 +552,7 @@ class Table extends Component {
                         <g transform="translate(400.5,366.5)scale(0.6)rotate(140,5,9)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={10}
                                     height={18}
@@ -561,24 +561,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 11,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -618,7 +618,7 @@ class Table extends Component {
                         <g transform="translate(94.5,266.5)scale(0.6)rotate(-105,5,9)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={10}
                                     height={18}
@@ -627,24 +627,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 11,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -683,7 +683,7 @@ class Table extends Component {
                         <g transform="translate(160.5,360.5)scale(0.6)rotate(-140,5,9)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={10}
                                     height={18}
@@ -692,24 +692,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 11,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -748,7 +748,7 @@ class Table extends Component {
                         <g transform="translate(457.5,150.5)scale(0.6)rotate(70,5,9)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={10}
                                     height={18}
@@ -757,24 +757,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 11,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -813,7 +813,7 @@ class Table extends Component {
                         <g transform="translate(176.5,60.5)scale(0.6)rotate(-40,9.5,9)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={19}
                                     height={18}
@@ -822,24 +822,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 19,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -878,7 +878,7 @@ class Table extends Component {
                         <g transform="translate(109.5,138.5)scale(0.6)rotate(-60,5,9)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={10}
                                     height={18}
@@ -887,24 +887,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 11,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -943,7 +943,7 @@ class Table extends Component {
                         <g transform="translate(466.5,266.5)scale(0.6)rotate(110,5,9)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={10}
                                     height={18}
@@ -952,24 +952,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 11,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -1007,7 +1007,7 @@ class Table extends Component {
                         <g transform="translate(283.5,402.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={10}
                                     height={18}
@@ -1016,24 +1016,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 11,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -1078,7 +1078,7 @@ class Table extends Component {
                         <g transform="translate(262.5,0.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={78}
                                     height={18}
@@ -1087,24 +1087,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 79,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <span style={{ fontSize: 17 }}>
@@ -1136,7 +1136,7 @@ class Table extends Component {
                         <g transform="translate(262.5,432.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={78}
                                     height={18}
@@ -1145,24 +1145,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 79,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -1194,7 +1194,7 @@ class Table extends Component {
                         <g transform="translate(445.5,390.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={78}
                                     height={18}
@@ -1203,24 +1203,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 79,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -1252,7 +1252,7 @@ class Table extends Component {
                         <g transform="translate(93.5,378.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={78}
                                     height={18}
@@ -1261,24 +1261,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 79,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -1310,7 +1310,7 @@ class Table extends Component {
                         <g transform="translate(23.5,278.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={78}
                                     height={18}
@@ -1319,24 +1319,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 79,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -1368,7 +1368,7 @@ class Table extends Component {
                         <g transform="translate(501.5,272.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={78}
                                     height={18}
@@ -1377,24 +1377,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 79,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -1426,7 +1426,7 @@ class Table extends Component {
                         <g transform="translate(493.5,144.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={78}
                                     height={18}
@@ -1435,24 +1435,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 79,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -1484,7 +1484,7 @@ class Table extends Component {
                         <g transform="translate(31.5,126.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={78}
                                     height={18}
@@ -1493,24 +1493,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 79,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -1542,7 +1542,7 @@ class Table extends Component {
                         <g transform="translate(427.5,48.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={78}
                                     height={18}
@@ -1551,24 +1551,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 79,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
@@ -1600,7 +1600,7 @@ class Table extends Component {
                         <g transform="translate(103.5,48.5)scale(0.6)">
                             <switch>
                                 <foreignObject
-                                    style={{ overflow: "visible" }}
+                                    style={{ overflow: 'visible' }}
                                     pointerEvents="all"
                                     width={78}
                                     height={18}
@@ -1609,24 +1609,24 @@ class Table extends Component {
                                     <div
                                         xmlns="http://www.w3.org/1999/xhtml"
                                         style={{
-                                            display: "inline-block",
+                                            display: 'inline-block',
                                             fontSize: 12,
-                                            fontFamily: "Helvetica",
-                                            color: "rgb(0, 0, 0)",
-                                            lineHeight: "1.2",
-                                            verticalAlign: "top",
+                                            fontFamily: 'Helvetica',
+                                            color: 'rgb(0, 0, 0)',
+                                            lineHeight: '1.2',
+                                            verticalAlign: 'top',
                                             width: 79,
-                                            whiteSpace: "nowrap",
-                                            wordWrap: "normal",
-                                            textAlign: "center"
+                                            whiteSpace: 'nowrap',
+                                            wordWrap: 'normal',
+                                            textAlign: 'center'
                                         }}
                                     >
                                         <div
                                             xmlns="http://www.w3.org/1999/xhtml"
                                             style={{
-                                                display: "inline-block",
-                                                textAlign: "inherit",
-                                                textDecoration: "inherit"
+                                                display: 'inline-block',
+                                                textAlign: 'inherit',
+                                                textDecoration: 'inherit'
                                             }}
                                         >
                                             <font
