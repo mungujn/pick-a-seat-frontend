@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "firebase": "^5.2.0",
+    "history": "^4.6.3",
+    "query-string": "^6.1.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
-    "react-scripts": "1.1.4",
-    "firebase": "^5.2.0",
     "react-router-dom": "^4.1.2",
-    "history": "^4.6.3",
+    "react-scripts": "1.1.4",
     "semantic-ui-css": "^2.3.3",
     "semantic-ui-react": "^0.82.0"
   },
