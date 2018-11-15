@@ -37,6 +37,9 @@ const styles = {
     }
 };
 
+/**
+ * Main UI component
+ */
 class Table extends Component {
     constructor(props) {
         super(props);
@@ -62,6 +65,10 @@ class Table extends Component {
             ]
         };
     }
+
+    /**
+     * Render the apps UI
+     */
     render() {
         return (
             <div style={styles.root}>
@@ -153,6 +160,9 @@ class Table extends Component {
         );
     }
 
+    /**
+     * Handle table number selection, highlight special table
+     */
     handleInput = event => {
         const name = event.target.name;
         const value = event.target.value;
@@ -178,6 +188,9 @@ class Table extends Component {
         }
     };
 
+    /**
+     * Check table occupancy
+     */
     handleClickCheck = event => {
         event.preventDefault();
         console.log('Checking table');
@@ -200,6 +213,9 @@ class Table extends Component {
         }
     };
 
+    /**
+     * Select a seat
+     */
     handleClickSelect = event => {
         console.log('Selecting seat');
         this.setState({
@@ -222,6 +238,9 @@ class Table extends Component {
         console.log(this.state);
     };
 
+    /**
+     * Validate selected table number
+     */
     validateTableInput = () => {
         console.log('Validating table number input');
         let table_number = parseInt(this.state.table_number);
@@ -232,6 +251,9 @@ class Table extends Component {
         return false;
     };
 
+    /**
+     * Validate selected seat number
+     */
     validateSeatInput = () => {
         console.log('Validating input');
         if (
@@ -248,6 +270,9 @@ class Table extends Component {
         this.updateSeatStates();
     }
 
+    /**
+     * Update seat states
+     */
     updateSeatStates = async () => {
         console.log('Updating table seat states');
         try {
@@ -268,6 +293,9 @@ class Table extends Component {
         }
     };
 
+    /**
+     * Pick a seat by interacting with the backend
+     */
     pickASeat = async () => {
         console.log('Updating table seat states');
         try {
@@ -313,6 +341,9 @@ class Table extends Component {
         }
     };
 
+    /**
+     * Display nofication
+     */
     getMessage = () => {
         if (this.state.show_message) {
             return (
@@ -325,6 +356,9 @@ class Table extends Component {
         }
     };
 
+    /**
+     * Get table fill color
+     */
     getFill = seat => {
         if (seat.taken === true) {
             return 'red';
@@ -332,10 +366,16 @@ class Table extends Component {
         return 'black';
     };
 
+    /**
+     * Get table name
+     */
     getTableName = () => {
         return `${this.state.table_name}`;
     };
 
+    /**
+     * Returns the JSX compatible SVG
+     */
     getSVG = () => {
         return (
             <svg

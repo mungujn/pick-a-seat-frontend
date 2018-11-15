@@ -5,7 +5,7 @@ export const CONSTANTS = {
     SUCCESS: 'success'
 };
 
-const PRODUCTION = true;
+const PRODUCTION = false;
 
 export async function checkSeatStates(data) {
     try {
