@@ -8,4 +8,4 @@ The web app is a React progressive web application.
 
 ![Screenshot](https://github.com/mungujn/pick-a-seat-frontend/raw/master/public/screenshot.JPG "App screenshot")
 
-I originally developed this for a client who was hosting a dinner at a hotel. The client gave me permission to open source the code. At the moment the apps flow is tuned too closely to the original flow and layout the client wanted. It could use some customization in order for the code to be reusable for different events. 
+I originally developed this for a client who was hosting a dinner at a hotel. The client gave me permission to open source the code. At the moment the apps flow is tuned too closely to the original flow and layout the client wanted. It could use some customization in order for the code to be reusable for different events.
