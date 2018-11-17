@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Image, Grid, Button, Form, Message, Loader } from 'semantic-ui-react';
 import * as backend from '../utilities/api';
+import * as utils from '../utilities/utils';
 
 const styles = {
     root: {
@@ -52,16 +53,16 @@ class Table extends Component {
             table_name: 'Table 1',
             seat_states: [
                 {},
-                { taken: false, ticket_number: '' },
-                { taken: false, ticket_number: '' },
-                { taken: false, ticket_number: '' },
-                { taken: false, ticket_number: '' },
-                { taken: false, ticket_number: '' },
-                { taken: false, ticket_number: '' },
-                { taken: false, ticket_number: '' },
-                { taken: false, ticket_number: '' },
-                { taken: false, ticket_number: '' },
-                { taken: false, ticket_number: '' }
+                { taken: false, name: '' },
+                { taken: false, name: '' },
+                { taken: false, name: '' },
+                { taken: false, name: '' },
+                { taken: false, name: '' },
+                { taken: false, name: '' },
+                { taken: false, name: '' },
+                { taken: false, name: '' },
+                { taken: false, name: '' },
+                { taken: false, name: '' }
             ]
         };
     }
@@ -193,17 +194,17 @@ class Table extends Component {
      */
     handleClickCheck = event => {
         event.preventDefault();
-        console.log('Checking table');
+        utils.log('Checking table');
         this.setState({
             loading: true,
             show_message: false
         });
 
         if (this.validateTableInput()) {
-            console.log('Table input validated');
+            utils.log('Table input validated');
             this.updateSeatStates();
         } else {
-            console.log('Table input validation failed');
+            utils.log('Table input validation failed');
             this.setState({
                 loading: false,
                 header: 'Error!',
@@ -217,7 +218,7 @@ class Table extends Component {
      * Select a seat
      */
     handleClickSelect = event => {
-        console.log('Selecting seat');
+        utils.log('Selecting seat');
         this.setState({
             loading: true,
             show_message: false
@@ -227,7 +228,7 @@ class Table extends Component {
         if (this.validateSeatInput() && this.validateTableInput()) {
             this.pickASeat();
         } else {
-            console.log('Input validation failed');
+            utils.log('Input validation failed');
             this.setState({
                 loading: false,
                 header: 'Error!',
@@ -235,16 +236,16 @@ class Table extends Component {
                 message: 'Input validation failed'
             });
         }
-        console.log(this.state);
+        utils.log(this.state);
     };
 
     /**
      * Validate selected table number
      */
     validateTableInput = () => {
-        console.log('Validating table number input');
+        utils.log('Validating table number input');
         let table_number = parseInt(this.state.table_number);
-        console.log(table_number);
+        utils.log(table_number);
         if (table_number < 21 && table_number > 0) {
             return true;
         }
@@ -255,11 +256,11 @@ class Table extends Component {
      * Validate selected seat number
      */
     validateSeatInput = () => {
-        console.log('Validating input');
+        utils.log('Validating input');
         if (
-            this.state.seat_number !== undefined &&
+            this.state.email_address !== undefined &&
             this.state.seat_number < 11 &&
-            this.state.seat_number > 0
+            this.state.ticket_number > 0
         ) {
             return true;
         }
@@ -274,11 +275,12 @@ class Table extends Component {
      * Update seat states
      */
     updateSeatStates = async () => {
-        console.log('Updating table seat states');
+        utils.log('Updating table seat states');
         try {
-            let table = `table-${this.state.table_number}`;
-            let seat_states = await backend.checkSeatStates(table);
-            console.log('Table seat_states data is', seat_states);
+            let seat_states = await backend.getTableOccupancy(
+                this.state.table_number
+            );
+            utils.log('Table seat_states data is', seat_states);
             this.setState({
                 seat_states: seat_states,
                 loading: false
@@ -297,33 +299,25 @@ class Table extends Component {
      * Pick a seat by interacting with the backend
      */
     pickASeat = async () => {
-        console.log('Updating table seat states');
+        utils.log('Updating table seat states');
         try {
             let data = {
-                table: `table-${this.state.table_number}`,
-                seat: this.state.seat_number,
-                customer: {
-                    ticket_number: this.state.ticket_number,
-                    email_address: this.state.email_address
-                }
+                seat_number: this.state.seat_number,
+                email_address: this.state.email_address,
+                ticket_number: this.state.ticket_number
             };
-            let result = await backend.selectSeat(data);
-            console.log('Seat selection result is', result);
-            if (result === true) {
-                this.setState({
-                    loading: false,
-                    show_message: true,
-                    header: 'Message',
-                    message: 'Successfully selected seat'
-                });
-            } else {
-                this.setState({
-                    loading: false,
-                    show_message: true,
-                    header: 'Error!',
-                    message: result
-                });
-            }
+            let result = await backend.selectSeat(
+                this.state.table_number,
+                data
+            );
+            utils.log('Seat selection result is', result);
+
+            this.setState({
+                loading: false,
+                show_message: true,
+                header: 'Message',
+                message: result
+            });
 
             setTimeout(() => {
                 this.updateSeatStates();
@@ -1151,8 +1145,7 @@ class Table extends Component {
                                                 <font color="#000">
                                                     {
                                                         this.state
-                                                            .seat_states[1]
-                                                            .ticket_number
+                                                            .seat_states[1].name
                                                     }
                                                 </font>
                                             </span>
@@ -1209,10 +1202,7 @@ class Table extends Component {
                                                 style={{ fontSize: 17 }}
                                                 color="#000"
                                             >
-                                                {
-                                                    this.state.seat_states[6]
-                                                        .ticket_number
-                                                }
+                                                {this.state.seat_states[6].name}
                                             </font>
                                         </div>
                                     </div>
@@ -1267,10 +1257,7 @@ class Table extends Component {
                                                 style={{ fontSize: 17 }}
                                                 color="#000"
                                             >
-                                                {
-                                                    this.state.seat_states[5]
-                                                        .ticket_number
-                                                }
+                                                {this.state.seat_states[5].name}
                                             </font>
                                         </div>
                                     </div>
@@ -1325,10 +1312,7 @@ class Table extends Component {
                                                 style={{ fontSize: 17 }}
                                                 color="#000"
                                             >
-                                                {
-                                                    this.state.seat_states[7]
-                                                        .ticket_number
-                                                }
+                                                {this.state.seat_states[7].name}
                                             </font>
                                         </div>
                                     </div>
@@ -1383,10 +1367,7 @@ class Table extends Component {
                                                 style={{ fontSize: 17 }}
                                                 color="#000"
                                             >
-                                                {
-                                                    this.state.seat_states[8]
-                                                        .ticket_number
-                                                }
+                                                {this.state.seat_states[8].name}
                                             </font>
                                         </div>
                                     </div>
@@ -1441,10 +1422,7 @@ class Table extends Component {
                                                 style={{ fontSize: 17 }}
                                                 color="#000"
                                             >
-                                                {
-                                                    this.state.seat_states[4]
-                                                        .ticket_number
-                                                }
+                                                {this.state.seat_states[4].name}
                                             </font>
                                         </div>
                                     </div>
@@ -1499,10 +1477,7 @@ class Table extends Component {
                                                 style={{ fontSize: 17 }}
                                                 color="#000"
                                             >
-                                                {
-                                                    this.state.seat_states[3]
-                                                        .ticket_number
-                                                }
+                                                {this.state.seat_states[3].name}
                                             </font>
                                         </div>
                                     </div>
@@ -1557,10 +1532,7 @@ class Table extends Component {
                                                 style={{ fontSize: 17 }}
                                                 color="#000"
                                             >
-                                                {
-                                                    this.state.seat_states[9]
-                                                        .ticket_number
-                                                }
+                                                {this.state.seat_states[9].name}
                                             </font>
                                         </div>
                                     </div>
@@ -1615,10 +1587,7 @@ class Table extends Component {
                                                 style={{ fontSize: 17 }}
                                                 color="#000"
                                             >
-                                                {
-                                                    this.state.seat_states[2]
-                                                        .ticket_number
-                                                }
+                                                {this.state.seat_states[2].name}
                                             </font>
                                         </div>
                                     </div>
@@ -1675,7 +1644,7 @@ class Table extends Component {
                                             >
                                                 {
                                                     this.state.seat_states[10]
-                                                        .ticket_number
+                                                        .name
                                                 }
                                             </font>
                                         </div>

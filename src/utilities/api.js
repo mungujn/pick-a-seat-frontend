@@ -1,42 +1,75 @@
 /**
  * Created by nickson on 6/23/2018.
  */
-export const CONSTANTS = {
-    SUCCESS: 'success'
-};
+const utils = require('./utils');
 
-const PRODUCTION = false;
+/**
+ * Switch local testing on or off
+ */
+const PRODUCTION = true;
 
-export async function checkSeatStates(data) {
+/**
+ * Check table occupancy
+ * @param {*} data table data
+ */
+export async function getTableOccupancy(table_number) {
     try {
-        let url = 'http://localhost:8080/check-seat-states';
+        let url = `http://localhost:8080/table/${table_number}`;
         if (PRODUCTION) {
-            url = 'https://pick-a-seat.appspot.com/check-seat-states';
+            url = `https://pick-a-seat.appspot.com/table/${table_number}`;
         }
-        let result = await post(url, { table: data });
-        let seat_states = parseSeatStates(result);
+        let response = await fetch(url, {
+            method: 'GET',
+            mode: 'cors'
+        });
+
+        let occupancy = await response.json();
+
+        let seat_states = parseTableState(occupancy);
         return seat_states;
     } catch (error) {
-        console.log('Error: ', error);
+        utils.log('Error: ', error);
         return error.message;
     }
 }
 
-function parseSeatStates(data) {
-    return data.message;
+/**
+ * Parse table occupancy data returned from server
+ * @param {*} data table data
+ */
+function parseTableState(data) {
+    return data;
 }
 
-export async function selectSeat(data) {
+/**
+ * Pick a seat by interacting with the backend
+ * @param {*} data
+ */
+export async function selectSeat(table_number, occupancy_details) {
+    utils.log('putting');
+    utils.log('table number', table_number);
+    utils.log('occupancy', occupancy_details);
     try {
-        let url = 'http://localhost:8080/pick-a-seat';
+        let url = `http://localhost:8080/table/${table_number}`;
         if (PRODUCTION) {
-            url = 'https://pick-a-seat.appspot.com/pick-a-seat';
+            url = `https://pick-a-seat.appspot.com/table/${table_number}`;
         }
-        let result = await post(url, data);
-        let result_2 = parseSeatSelectionResult(result);
-        return result_2;
+        let response = await fetch(url, {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8'
+            },
+            body: JSON.stringify(occupancy_details)
+        });
+
+        let status = await response.json();
+
+        let selection_result = parseSeatSelectionResult(status);
+
+        return selection_result;
     } catch (error) {
-        console.log('Error: ', error);
+        utils.log('Error: ', error);
         return error.message;
     }
 }
@@ -45,37 +78,8 @@ function parseSeatSelectionResult(data) {
     return data.message;
 }
 
-export async function post(url, data, auth) {
-    log(`Posting ${JSON.stringify(data)} to url ${url}`);
-
-    let response = await fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-            Authorization: auth,
-            'Content-type': 'application/json; charset=UTF-8'
-        },
-        body: JSON.stringify(data)
-    });
-
-    let json_response;
-
-    if (response.status === 200) {
-        console.log('Response code', response.status);
-        json_response = await response.json();
-        console.log('Response message', json_response);
-    } else if (response.status === 401) {
-        return { message: 'Wrong ticket number or email' };
-    } else {
-        console.log('Response', response.status);
-        json_response = await response.json();
-        console.log('Response message', json_response['message']);
-    }
-    return json_response;
-}
-
 export function log(message) {
     if (!PRODUCTION) {
-        console.log(message);
+        utils.log(message);
     }
 }

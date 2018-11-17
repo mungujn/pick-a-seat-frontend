@@ -1,3 +1,6 @@
+.firebaserc
+firebase.json
+yarn.lock
 
 # dependencies
 /node_modules
